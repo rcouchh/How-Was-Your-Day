@@ -3,6 +3,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**********************************
  GUI Version of a board game created at 
@@ -18,6 +20,7 @@ public class hexgame
 		initGame();
 		createAndShowGUI();
 		initPlayers();
+		generatePlayerOrder();
 	}
 
 	public static void main(String[] args)
@@ -42,9 +45,10 @@ public class hexgame
 	final static int HEXSIZE = 60; //hex size in pixels
 	final static int BORDERS = 15;
 	final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS*3; //screen size (vertical dimension).
-	final static int numPlayers = 0;
+	final static int numPlayers = 4;
+	player[] players = new player[4];
 	int[][] board = new int[BSIZE][BSIZE];
-
+	
 	void initGame(){
 
 		hexmech.setXYasVertex(false); //RECOMMENDED: leave this as FALSE.
@@ -62,11 +66,38 @@ public class hexgame
 
 	void initPlayers(){
 		//JOptionPane pane = new JOptionPane("What would you like to build?");
-		for(int i=1; i<5; i++){
+		for(int i=0; i<4; i++){
 		JFrame frame = new JFrame("Game Setup");
-		String name = JOptionPane.showInputDialog(frame, "Player "+i+": Enter your name");
+		String name = JOptionPane.showInputDialog(frame, "Player "+(i+1)+": Enter your name");
 		player p = new player(name);
+		players[i] = p;
 		}
+	}
+	
+	void generatePlayerOrder(){
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		Collections.shuffle(list);
+		System.out.println(list);
+		
+		player[] temp = new player[4];
+
+		for(int i=0; i<4; i++){
+			players[i].order = list.get(i);
+			int x = list.get(i)-1;
+			temp[x] = new player(players[i].name);
+			temp[x].order = list.get(i);
+		}
+		
+		players = temp;
+		
+		for(int i=0; i<4; i++){
+			System.out.println("Player "+i+": "+players[i].name);
+		}
+		
 	}
 	
 	
