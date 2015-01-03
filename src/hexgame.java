@@ -21,6 +21,7 @@ public class hexgame
 		createAndShowGUI();
 		initPlayers();
 		generatePlayerOrder();
+		playersTurn();
 	}
 
 	public static void main(String[] args)
@@ -47,6 +48,7 @@ public class hexgame
 	final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS*3; //screen size (vertical dimension).
 	final static int numPlayers = 4;
 	player[] players = new player[4];
+	player currentPlayer = null;
 	int[][] board = new int[BSIZE][BSIZE];
 	
 	void initGame(){
@@ -72,6 +74,7 @@ public class hexgame
 		player p = new player(name);
 		players[i] = p;
 		}
+
 	}
 	
 	void generatePlayerOrder(){
@@ -81,7 +84,7 @@ public class hexgame
 		list.add(3);
 		list.add(4);
 		Collections.shuffle(list);
-		System.out.println(list);
+	//	System.out.println(list);
 		
 		player[] temp = new player[4];
 
@@ -93,13 +96,55 @@ public class hexgame
 		}
 		
 		players = temp;
-		
+		JFrame frame = new JFrame("Turn Order");
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		Object[] columns = {"1st", "2nd", "3rd", "4th"};
+		Object[] names = new Object[4];
 		for(int i=0; i<4; i++){
-			System.out.println("Player "+i+": "+players[i].name);
+			//JTextField name = new JTextField(players[i].name);
+			names[i] = (Object)players[i].name;
+			//name.setSize(50, 10);
+			//frame.add(name);
 		}
+		Object[][] data = {columns, names};
+		JTable table = new JTable(data, columns);
+		frame.setSize(600,400);
+		frame.add(table,BorderLayout.CENTER);
+		frame.pack();
+		//frame.setSize(200, 200);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+	
+	
+	
+	void playersTurn(){
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		//show whos turn it is
+		displayPlayersTurn();
+		
+		//carry out turn
+		
 		
 	}
 	
+	
+	
+	void displayPlayersTurn(){
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JFrame frame = new JFrame("Next Turn!");
+		frame.setSize(300,70);
+		
+		//delete later
+		currentPlayer = players[0];
+		
+		JTextField name = new JTextField(currentPlayer.name);
+		name.setEditable(false);
+		frame.add(name);
+		//frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
 	
 	private void createAndShowGUI()
 	{
@@ -108,6 +153,7 @@ public class hexgame
 
 		//JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("How Was Your Day?");
+		JFrame.setDefaultLookAndFeelDecorated(true);
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		Container content = frame.getContentPane();
 		content.add(panel);
