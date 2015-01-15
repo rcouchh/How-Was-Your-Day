@@ -19,9 +19,10 @@ public class hexgame
 	private hexgame() {
 		initGame();
 		createAndShowGUI();
-		initPlayers();
-		generatePlayerOrder();
-		playersTurn();
+		generateBuildingBlocks();
+		//initPlayers();
+		//generatePlayerOrder();
+		//playersTurn();
 	}
 
 	public static void main(String[] args)
@@ -116,18 +117,74 @@ public class hexgame
 		frame.setVisible(true);
 	}
 	
-	
-	
-	void playersTurn(){
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		//show whos turn it is
-		displayPlayersTurn();
-		
-		//carry out turn
-		
+	void generateBuildingBlocks(){
+		Graphics g = null;
+		colorHex(1,2, g);
 		
 	}
 	
+	void colorHex(int x, int y, Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setColor(Color.BLUE);
+		hexmech.fillHex(x,y,board[x][y],g2);
+	}
+	
+	void playersTurn(){
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		
+		//show whos turn it is
+		displayPlayersTurn();
+		
+		//ask what player would like to do
+		showMoveTypes();
+		
+		//carry out turn
+		turn t = new turn(this.currentPlayer);
+		
+	}
+	
+	void showMoveTypes(){
+		JFrame frame = new JFrame("What would you like to do?");
+		JOptionPane j = new JOptionPane("Options");
+		//add move, attack, upgrade, build
+		
+		Object[] types = {"Move", "Build", "Upgrade", "Attack"};
+		int response = JOptionPane.showOptionDialog(frame, "Select turn option", "Build", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, types, types[0]);
+		
+		//move
+		if(response==0){
+			//Select builder
+			//Select location (must be in bounds)
+			//board[p.x][p.y] = (int)'M';
+		}
+		//build
+		if(response==1){
+			//Select location
+			//Must be building block
+			//board[p.x][p.y]= (int)'F'; 
+		}  
+		//upgrade
+		if(response==2){
+			//Select building (must exist)
+			//Must have enough $
+			//board[p.x][p.y]= (int)'L'; 
+		}  
+		//attack
+		if(response==3){
+			//Select barracks
+			//Select what you want to attack
+			//Odds and all that shit
+			//board[p.x][p.y]= (int)'C'; 
+		}  
+
+		
+		
+		
+		frame.add(j);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
 	
 	
 	void displayPlayersTurn(){
@@ -138,7 +195,7 @@ public class hexgame
 		//delete later
 		currentPlayer = players[0];
 		
-		JTextField name = new JTextField(currentPlayer.name);
+		JTextField name = new JTextField("Player: "+currentPlayer.name);
 		name.setEditable(false);
 		frame.add(name);
 		//frame.pack();
@@ -218,10 +275,10 @@ public class hexgame
 				//DEBUG: colour in the hex which is supposedly the one clicked on
 				//clear the whole screen first.
 				/* for (int i=0;i<BSIZE;i++) {
-for (int j=0;j<BSIZE;j++) {
-board[i][j]=EMPTY;
-}
-} */
+				for (int j=0;j<BSIZE;j++) {
+				board[i][j]=EMPTY;
+					}
+				} */
 				JFrame frame = new JFrame("JOptionPane ex");
 				//JOptionPane pane = new JOptionPane("What would you like to build?");
 				Object[] poss = {"Military Barracks", "Factory", "Laboratory", "Church"};
